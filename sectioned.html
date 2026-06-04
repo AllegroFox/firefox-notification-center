@@ -1,170 +1,209 @@
 <!doctype html>
-<style>
-</style>
+<style></style>
 
 <h1>Notifications</h1>
-<script type=module>
-import {LitElement, html, css, repeat} from 'https://cdn.jsdelivr.net/gh/lit/dist@3/all/lit-all.min.js';
+<script type="module">
+  import {
+    LitElement,
+    html,
+    css,
+    repeat,
+  } from "https://cdn.jsdelivr.net/gh/lit/dist@3/all/lit-all.min.js";
 
-class Category {
-	constructor({ name, sources }) {
-		this.id = Math.floor(Math.random() * 5000);
-		this.name = name;
-		this.sources = sources;
-	}
-}
+  class Category {
+    constructor({ name, sources }) {
+      this.id = Math.floor(Math.random() * 5000);
+      this.name = name;
+      this.sources = sources;
+    }
+  }
 
-const CategoryManager = new class extends EventTarget {
-	#store = [
-		new Category({
-			name: "Important",
-			sources: ["https://matrix.org", "https://gmail.com"],
-		}),
-		new Category({
-			name: "Others",
-			sources: ["https://news.example.com"], // TODO make this a real catch-all somehow
-		}),
-	];
-	
-	getCategories() {
-		return [...this.#store];
-	}
-};
+  const CategoryManager = new (class extends EventTarget {
+    #store = [
+      new Category({
+        name: "Important",
+        sources: ["https://matrix.org", "https://gmail.com"],
+      }),
+      new Category({
+        name: "Others",
+        sources: ["https://news.example.com"], // TODO make this a real catch-all somehow
+      }),
+    ];
 
-class Notification {
-	constructor({ source, title, when }) {
-		this.source = source;
-		this.title = title;
-		this.when = when;
-	}
-};
+    getCategories() {
+      return [...this.#store];
+    }
+  })();
 
-const NotificationManager = new class {
-	#store = [
-		new Notification({ source: "https://matrix.org", title: "'Yep, backed out, please never do that again.'", when: 20260604 }),
-		new Notification({ source: "https://matrix.org", title: "'Didn't see that, sorry!'", when: 20260605 }),
-		new Notification({ source: "https://gmail.com", title: "Important: talk to a real dinosaur!", when: 20260605 }),
-		new Notification({ source: "https://gmail.com", title: "Ice cream sales update", when: 20260606 }),
-		new Notification({ source: "https://news.example.com", title: "People dead, but it's OK they don't live near you", when: 20260607 }),
-	];
-	
-	getNotifications(sources, searchQuery) {
-		return this.#store.filter(notification => {
-			return notification.title.toLowerCase().indexOf(searchQuery) >= 0 && sources.includes(notification.source);
-		});
-	}
-};
+  class Notification {
+    constructor({ source, title, when }) {
+      this.source = source;
+      this.title = title;
+      this.when = when;
+    }
+  }
 
-class CategoryElement extends LitElement {
-	static properties = {
-		category: { attribute: false },
-		filter: { type: String },
-	};
-	
-	static styles = css`
-		h2 {
-			margin-bottom: 0;
-		}
+  const NotificationManager = new (class {
+    #store = [
+      new Notification({
+        source: "https://matrix.org",
+        title: "'Yep, backed out, please never do that again.'",
+        when: 20260604,
+      }),
+      new Notification({
+        source: "https://matrix.org",
+        title: "'Didn't see that, sorry!'",
+        when: 20260605,
+      }),
+      new Notification({
+        source: "https://gmail.com",
+        title: "Important: talk to a real dinosaur!",
+        when: 20260605,
+      }),
+      new Notification({
+        source: "https://gmail.com",
+        title: "Ice cream sales update",
+        when: 20260606,
+      }),
+      new Notification({
+        source: "https://news.example.com",
+        title: "People dead, but it's OK they don't live near you",
+        when: 20260607,
+      }),
+    ];
 
-		.notification {
-			padding-block: 2px;
-		
-			& > main {
-				border-radius: 4px;
-				padding: 4px;
-			}
-			
-			&:hover > main {
-				background: #7773;
-			}
-			
-			& .title {
-				display: block;
-			}
-		}
-	`;
+    getNotifications(sources, searchQuery) {
+      return this.#store.filter((notification) => {
+        return (
+          notification.title.toLowerCase().indexOf(searchQuery) >= 0 &&
+          sources.includes(notification.source)
+        );
+      });
+    }
+  })();
 
-	render() {
-		let notifications = NotificationManager.getNotifications(this.category.sources, this.filter);
-		if (!notifications.length) {
-			return;
-		}
-		return html`
-			<div>
-				<h2>${this.category.name}</h2>
-				${repeat(
-					notifications,
-					notification => notification.when,
-					this.notificationTemplate,
-				)}
-			</div>
-		`;
-	}
-	
-	notificationTemplate(notification) {
-		return html`
-			<div class="notification">
-				<main>
-					<strong class="title">${notification.title}</strong>
-					<span class="source">${notification.source}</span>
-				</main>
-			</div>
-		`;
-	}
-}
+  class CategoryElement extends LitElement {
+    static properties = {
+      category: { attribute: false },
+      filter: { type: String },
+    };
 
-class CategoryListElement extends LitElement {
-	static properties = {
-		searchQuery: { type: String },
-	};
+    static styles = css`
+      h2 {
+        margin-bottom: 0;
+      }
 
-	static styles = css`
-		ul {
-			list-style: none;
-			padding-inline-start: 0;
-		}
-	`;
-	
-	constructor() {
-		super();
-		this.searchQuery = "";
-	}
+      .notification {
+        padding-block: 2px;
 
-	connectedCallback() {
-		super.connectedCallback();
-		CategoryManager.addEventListener("change", this);
-	}
-	
-	handleEvent(event) {
-		if (event.type === "change") {
-			this.requestUpdate();
-		}
-	}
+        & > main {
+          border-radius: 4px;
+          padding: 4px;
+        }
 
-	render() {
-		return html`
-		<search>
-			<input value=${this.searchQuery} placeholder=Search @input=${this.onSearchQueryChange}>
-		</search>
-		<ul>
-			${repeat(
-				CategoryManager.getCategories(),
-				category => category.id,
-				category => html`
-					<li><mockup-category .category=${category} .filter=${this.searchQuery}></mockup-category></li>
-				`
-			)}
-		</ul>
-		`;
-	}
-	
-	onSearchQueryChange(event) {
-		this.searchQuery = event.target.value.toLowerCase();
-	}
-}
+        &:hover > main {
+          background: #7773;
+        }
 
-window.CategoryManager = CategoryManager;
-customElements.define("mockup-category-list", CategoryListElement);
-customElements.define("mockup-category", CategoryElement);
+        & .title {
+          display: block;
+        }
+      }
+    `;
+
+    render() {
+      let notifications = NotificationManager.getNotifications(
+        this.category.sources,
+        this.filter,
+      );
+      if (!notifications.length) {
+        return;
+      }
+      return html`
+        <div>
+          <h2>${this.category.name}</h2>
+          ${repeat(
+            notifications,
+            (notification) => notification.when,
+            this.notificationTemplate,
+          )}
+        </div>
+      `;
+    }
+
+    notificationTemplate(notification) {
+      return html`
+        <div class="notification">
+          <main>
+            <strong class="title">${notification.title}</strong>
+            <span class="source">${notification.source}</span>
+          </main>
+        </div>
+      `;
+    }
+  }
+
+  class CategoryListElement extends LitElement {
+    static properties = {
+      searchQuery: { type: String },
+    };
+
+    static styles = css`
+      ul {
+        list-style: none;
+        padding-inline-start: 0;
+      }
+    `;
+
+    constructor() {
+      super();
+      this.searchQuery = "";
+    }
+
+    connectedCallback() {
+      super.connectedCallback();
+      CategoryManager.addEventListener("change", this);
+    }
+
+    handleEvent(event) {
+      if (event.type === "change") {
+        this.requestUpdate();
+      }
+    }
+
+    render() {
+      return html`
+        <search>
+          <input
+            value=${this.searchQuery}
+            placeholder="Search"
+            @input=${this.onSearchQueryChange}
+          />
+        </search>
+        <ul>
+          ${repeat(
+            CategoryManager.getCategories(),
+            (category) => category.id,
+            (category) => html`
+              <li>
+                <mockup-category
+                  .category=${category}
+                  .filter=${this.searchQuery}
+                ></mockup-category>
+              </li>
+            `,
+          )}
+        </ul>
+      `;
+    }
+
+    onSearchQueryChange(event) {
+      this.searchQuery = event.target.value.toLowerCase();
+    }
+  }
+
+  window.CategoryManager = CategoryManager;
+  customElements.define("mockup-category-list", CategoryListElement);
+  customElements.define("mockup-category", CategoryElement);
 </script>
 <mockup-category-list></mockup-category-list>
