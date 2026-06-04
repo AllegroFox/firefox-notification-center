@@ -118,6 +118,18 @@ $('.newtab__logo').addEventListener('click', async () => {
   }
 });
 
+/* Fire an OS notification for an incoming NOTIFS record. Alert-only — does not
+   touch in-memory state or re-render. The feed calls this per callback. */
+function fireWebNotification(record) {
+  if (!record) return;
+  if (!('Notification' in window) || Notification.permission !== 'granted') return;
+  new Notification(record.title, {
+    body: record.preview,
+    tag: String(record.id),
+  });
+}
+window.fireWebNotification = fireWebNotification;
+
 /* Keyboard shortcut hint */
 document.addEventListener('keydown', (e) => {
   if (e.key === '?') {
