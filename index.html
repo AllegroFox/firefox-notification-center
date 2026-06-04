@@ -225,6 +225,14 @@
           </button>
         </div>
 
+        <!-- Grouping mode (source / category / flat) -->
+        <div class="group-modes" role="group" aria-label="Group notifications by">
+          <span class="group-modes__label">Group by</span>
+          <button class="chip is-active" data-group-mode="source">Source</button>
+          <button class="chip" data-group-mode="category">Category</button>
+          <button class="chip" data-group-mode="none">None</button>
+        </div>
+
         <!-- Grouped inbox (rendered by JS) -->
         <div id="groupedInbox"></div>
         <!-- Hidden legacy targets so old code keeps working (we render to grouped view instead) -->
@@ -313,6 +321,19 @@
           </button>
 
         </div>
+
+        <div class="settings-group">Categories</div>
+        <p style="font-size:12px; color: var(--text-3); padding: 0 6px 10px; line-height: 1.5;">
+          Group similar notifications together — like sorting mail into Important, Messages, or Promotions.
+          Switch the Recent list to <strong>Group by · Category</strong> to use them. Turn any off, or build your own with custom rules.
+        </p>
+
+        <div id="categoryList"><!-- rendered by JS --></div>
+
+        <div class="cat-add">
+          <button class="btn" id="addCatBtn">+ New category</button>
+        </div>
+        <div class="cat-form" id="catForm" hidden><!-- builder, rendered by JS --></div>
 
         <div class="settings-group">Behavior</div>
 
@@ -454,6 +475,7 @@
 </div>
 
   <script src="js/data.js"></script>
+  <script src="js/categories.js"></script>
   <script src="js/inbox.js"></script>
   <script src="js/sources.js"></script>
   <script src="js/stats.js"></script>
