@@ -1,4 +1,6 @@
 <!doctype html>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="color-scheme" content="light dark" />
 <style></style>
 
 <h1>Notifications</h1>
@@ -107,7 +109,22 @@
 
         & .title {
           display: block;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow-x: hidden;
         }
+      }
+
+      .top {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      button {
+        border-radius: 4px;
+        font-size: 90%;
+        border: 1px solid CanvasText;
+        background: Canvas;
       }
     `;
 
@@ -121,7 +138,12 @@
       }
       return html`
         <div>
-          <h2>${this.category.name}</h2>
+          <div class="top">
+            <strong class="name">${this.category.name}</strong>
+            <button class="info">
+              ${this.category.sources.length} sources
+            </button>
+          </div>
           ${repeat(
             notifications,
             (notification) => notification.when,
