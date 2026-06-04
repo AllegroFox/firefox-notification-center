@@ -194,54 +194,6 @@
 
       <!-- RECENT view -->
       <section class="sb__view" data-view="recent" role="tabpanel">
-        <!-- Mini stats -->
-        <div class="sb__stats">
-          <div class="sb__stat">
-            <div class="sb__stat__num"><span id="statTotal">47</span></div>
-            <div class="sb__stat__label">This week</div>
-          </div>
-          <div class="sb__stat">
-            <div class="sb__stat__num good"><span id="statOpened">11</span></div>
-            <div class="sb__stat__label">You opened</div>
-          </div>
-          <div class="sb__stat">
-            <div class="sb__stat__num bad"><span id="statDormant">3</span></div>
-            <div class="sb__stat__label">Dormant</div>
-          </div>
-        </div>
-
-        <!-- Toolbar -->
-        <div class="toolbar" style="padding:6px 0 10px;border:0;background:transparent;flex-wrap:wrap">
-          <button class="btn is-active" data-filter="all">All</button>
-          <button class="btn" data-filter="unread">Unread <span class="kbd" id="unreadCount">5</span></button>
-          <button class="btn" data-filter="today">Today</button>
-          <button class="btn" data-filter="flagged">Needs review</button>
-          <div class="toolbar__push"></div>
-          <button class="btn btn--ghost btn--icon" id="markAllBtn" title="Mark all read">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12l4 4 10-10"/></svg>
-          </button>
-          <button class="btn btn--ghost btn--icon" id="cleanupBtn" title="Clean up dormant">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></svg>
-          </button>
-        </div>
-
-        <!-- Grouping mode (source / category / flat) -->
-        <div class="group-modes" role="group" aria-label="Group notifications by">
-          <span class="group-modes__label">Group by</span>
-          <button class="chip is-active" data-group-mode="source">Source</button>
-          <button class="chip" data-group-mode="category">Category</button>
-          <button class="chip" data-group-mode="none">None</button>
-        </div>
-
-        <!-- Grouped inbox (rendered by JS) -->
-        <div id="groupedInbox"></div>
-        <!-- Hidden legacy targets so old code keeps working (we render to grouped view instead) -->
-        <div id="inboxScroll" hidden></div>
-        <span id="inboxCount" hidden></span>
-        <span id="newCount" hidden></span>
-        <span id="srcCount" hidden></span>
-        <span id="openRate" hidden></span>
-        <span id="statSites" hidden></span>
       </section>
 
       <!-- SOURCES view -->
@@ -476,7 +428,6 @@
 
   <script src="js/data.js"></script>
   <script src="js/categories.js"></script>
-  <script src="js/inbox.js"></script>
   <script src="js/sources.js"></script>
   <script src="js/stats.js"></script>
   <script src="js/banner.js"></script>

@@ -162,3 +162,7 @@ class CategoryListElement extends LitElement {
 window.NotificationManager = NotificationManager;
 customElements.define("mockup-category-list", CategoryListElement);
 customElements.define("mockup-category", CategoryElement);
+
+window.addEventListener("load", event => {
+  document.querySelector(".sb__view[data-view=recent]").appendChild(document.createElement("mockup-category-list"));
+});
