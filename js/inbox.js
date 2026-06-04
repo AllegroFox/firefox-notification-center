@@ -5,7 +5,7 @@
 let activeFilter = 'all';
 let hideMuted = false;
 let activeMode = 'standard'; // calm | standard | focus
-let groupBySource = true;
+let groupMode = 'source';    // source | category | none
 let showPreviews = true;
 const collapsedGroups = new Set();
 
@@ -71,9 +71,37 @@ function renderInbox() {
     return;
   }
 
-  // Group by source (or flat, by date)
+  // Group by source, by category, or flat (by date)
   let html = '';
-  if (groupBySource) {
+  if (groupMode === 'category') {
+    const byCat = new Map();
+    filtered.forEach(n => {
+      const c = categorize(n);
+      if (!c) return;
+      if (!byCat.has(c.id)) byCat.set(c.id, []);
+      byCat.get(c.id).push(n);
+    });
+    // Render enabled categories in their configured order; skip empty ones.
+    for (const c of CategoryManager.getEnabled()) {
+      const items = (byCat.get(c.id) || []).sort((a, b) => b.when - a.when);
+      if (!items.length) continue;
+      const unreadInGroup = items.filter(n => n.unread).length;
+      const isCollapsed = collapsedGroups.has(c.id);
+      html += `
+        <div class="group ${isCollapsed ? 'is-collapsed' : ''}" data-group="${c.id}">
+          <button class="group__head" data-act="toggle-group">
+            <svg class="group__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+            <span class="group__icon" style="background:${c.color}">${c.icon}</span>
+            <span class="group__name">${c.name}</span>
+            <span class="group__count">${items.length}</span>
+            ${unreadInGroup ? `<span class="group__new">${unreadInGroup} new</span>` : ''}
+          </button>
+          <div class="group__items">
+            ${items.map(n => snotifHTML(n, true)).join('')}
+          </div>
+        </div>`;
+    }
+  } else if (groupMode === 'source') {
     const bySrc = {};
     filtered.forEach(n => { (bySrc[n.src] = bySrc[n.src] || []).push(n); });
     // Order: groups with most unread first, then most recent

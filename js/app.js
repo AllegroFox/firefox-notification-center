@@ -26,6 +26,25 @@ $$('[data-source-sort]').forEach(btn => {
   });
 });
 
+/* Grouping mode chips (Source / Category / None) — kept in sync with the
+   "Group by source" toggle in Settings. */
+function syncGroupControls() {
+  $$('[data-group-mode]').forEach(b => b.classList.toggle('is-active', b.dataset.groupMode === groupMode));
+  const t = $('[data-toggle="group"]');
+  if (t) {
+    const on = groupMode !== 'none';
+    t.classList.toggle('is-on', on);
+    t.setAttribute('aria-pressed', on);
+  }
+}
+$$('[data-group-mode]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    groupMode = btn.dataset.groupMode;
+    syncGroupControls();
+    renderInbox();
+  });
+});
+
 /* =========================================================
    Bulk actions
    ========================================================= */
@@ -213,7 +232,7 @@ $$('[data-toggle]').forEach(t => {
   t.addEventListener('click', () => {
     const on = t.classList.toggle('is-on');
     t.setAttribute('aria-pressed', on);
-    if (t.dataset.toggle === 'group')   { groupBySource = on; renderInbox(); }
+    if (t.dataset.toggle === 'group')   { groupMode = on ? 'source' : 'none'; syncGroupControls(); renderInbox(); }
     if (t.dataset.toggle === 'preview') { showPreviews = on; renderInbox(); }
     if (t.dataset.toggle === 'stats')   { showStats = on; updateStatsVisibility(); }
   });
