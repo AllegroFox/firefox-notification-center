@@ -5,31 +5,6 @@ import {
   repeat,
 } from "https://cdn.jsdelivr.net/gh/lit/dist@3/all/lit-all.min.js";
 
-class Category {
-  constructor({ name, sources }) {
-    this.id = Math.floor(Math.random() * 5000);
-    this.name = name;
-    this.sources = sources;
-  }
-}
-
-const CategoryManager = new (class extends EventTarget {
-  #store = [
-    new Category({
-      name: "Important",
-      sources: ["discord", "reddit"],
-    }),
-    new Category({
-      name: "Others",
-      sources: ["nyt"], // TODO make this a real catch-all somehow
-    }),
-  ];
-
-  getCategories() {
-    return [...this.#store];
-  }
-})();
-
 const NotificationManager = new (class {
   #store = [...window.NOTIFS];
 
@@ -37,9 +12,17 @@ const NotificationManager = new (class {
     return this.#store.filter((notification) => {
       return (
         notification.title.toLowerCase().indexOf(searchQuery) >= 0 &&
-        sources.includes(notification.src)
+        sources.find(src => src.id === notification.src)
       );
     });
+  }
+
+  getCategories() {
+    let categories = new Map();
+    for (const source of window.SOURCES) {
+      categories.set(source.profile, categories.getOrInsert(source.profile, []).concat([source]));
+    }
+    return [...categories.entries().map(([k,v]) => ({ id: k, name: k, sources: v }))];
   }
 })();
 
@@ -139,11 +122,6 @@ class CategoryListElement extends LitElement {
     this.searchQuery = "";
   }
 
-  connectedCallback() {
-    super.connectedCallback();
-    CategoryManager.addEventListener("change", this);
-  }
-
   handleEvent(event) {
     if (event.type === "change") {
       this.requestUpdate();
@@ -161,7 +139,7 @@ class CategoryListElement extends LitElement {
       </search>
       <ul>
         ${repeat(
-          CategoryManager.getCategories(),
+          NotificationManager.getCategories(),
           (category) => category.id,
           (category) => html`
             <li>
@@ -181,6 +159,6 @@ class CategoryListElement extends LitElement {
   }
 }
 
-window.CategoryManager = CategoryManager;
+window.NotificationManager = NotificationManager;
 customElements.define("mockup-category-list", CategoryListElement);
 customElements.define("mockup-category", CategoryElement);
