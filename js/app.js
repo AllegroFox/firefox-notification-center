@@ -9,6 +9,10 @@ $$('[data-filter]').forEach(btn => {
     renderInbox();
   });
 });
+$('#inboxSearch')?.addEventListener('input', (e) => {
+  searchQuery = e.target.value;
+  renderInbox();
+});
 $$('[data-source-filter]').forEach(btn => {
   btn.addEventListener('click', () => {
     $$('[data-source-filter]').forEach(b => b.classList.remove('is-active'));

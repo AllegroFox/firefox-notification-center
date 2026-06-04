@@ -3,6 +3,7 @@
    ========================================================= */
 
 let activeFilter = 'all';
+let searchQuery = '';
 let hideMuted = false;
 let activeMode = 'standard'; // calm | standard | focus
 let groupMode = 'source';    // source | category | none
@@ -30,9 +31,11 @@ function renderInbox() {
   const POOL = notifsForProfile();
 
   // Apply user filters + mode filter
+  const q = searchQuery.trim().toLowerCase();
   const allVisible = POOL.filter(n => {
     if (sourceState[n.src]?.revoked) return false;
     if (hideMuted && sourceState[n.src]?.paused) return false;
+    if (q && !(`${n.title} ${n.preview} ${src(n.src).name}`.toLowerCase().includes(q))) return false;
     if (activeFilter === 'unread') return n.unread;
     if (activeFilter === 'today')  return (NOW - n.when) / 3600000 < 24;
     if (activeFilter === 'flagged') return src(n.src).status === 'dormant';
@@ -60,7 +63,14 @@ function renderInbox() {
 
   // Empty state
   if (filtered.length === 0) {
-    host.innerHTML = `
+    host.innerHTML = q
+      ? `
+      <div class="empty" style="padding:30px 12px;">
+        <div class="empty__big">🔍</div>
+        <div class="empty__title">No matches</div>
+        <div class="empty__hint">Nothing matches “${q}”. Try a different search.</div>
+      </div>`
+      : `
       <div class="empty" style="padding:30px 12px;">
         <div class="empty__big">✦</div>
         <div class="empty__title">You're all caught up</div>

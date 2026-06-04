@@ -178,6 +178,39 @@ body.has-sidebar { padding-right: var(--sidebar-w); }
 .sb__view { padding: 8px 12px 16px; }
 .sb__view[hidden] { display: none; }
 
+/* Search bar (Recent) */
+.sb__search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  padding: 7px 10px;
+  margin: 4px 2px 10px;
+}
+.sb__search:focus-within {
+  border-color: var(--border-strong);
+  background: var(--surface);
+}
+.sb__search__icon {
+  flex: none;
+  color: var(--text-3);
+}
+.sb__search input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 13px;
+  outline: none;
+  padding: 0;
+}
+.sb__search input::placeholder { color: var(--text-3); }
+.sb__search input::-webkit-search-cancel-button { cursor: pointer; }
+
 /* Inline mini-stats in sidebar */
 .sb__stats {
   display: grid;
