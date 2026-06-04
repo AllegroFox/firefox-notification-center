@@ -41,8 +41,9 @@ class CategoryElement extends LitElement {
       padding-block: 2px;
 
       & > main {
-        border-radius: 4px;
+        border-radius: 8px;
         padding: 4px;
+        padding-inline: 6px;
       }
 
       &:hover > main {
@@ -54,19 +55,32 @@ class CategoryElement extends LitElement {
         text-overflow: ellipsis;
         white-space: nowrap;
         overflow-x: hidden;
+        font-weight: 500;
+      }
+
+      & .source {
+        color: #aaa;
       }
     }
 
     .top {
       display: flex;
       justify-content: space-between;
+      font-size: 90%;
+    }
+
+    .name {
+      text-transform: uppercase;
+      font-weight: 300;
     }
 
     button {
-      border-radius: 4px;
+      border-radius: 9999px;
+      padding-inline: 8px;
       font-size: 90%;
-      border: 1px solid CanvasText;
-      background: Canvas;
+      color: white;
+      border: 1px solid white;
+      background: transparent;
     }
   `;
 
@@ -111,9 +125,24 @@ class CategoryListElement extends LitElement {
   };
 
   static styles = css`
+    div {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+    }
+
     ul {
       list-style: none;
       padding-inline-start: 0;
+    }
+
+    input {
+      padding: 8px;
+      padding-inline-start: 16px;
+      background: #fff2;
+      color: white;
+      border: 1px solid #bbb;
+      border-radius: 9999px;
     }
   `;
 
@@ -130,27 +159,27 @@ class CategoryListElement extends LitElement {
 
   render() {
     return html`
-      <search>
+      <div>
         <input
           value=${this.searchQuery}
           placeholder="Search"
           @input=${this.onSearchQueryChange}
         />
-      </search>
-      <ul>
-        ${repeat(
-          NotificationManager.getCategories(),
-          (category) => category.id,
-          (category) => html`
-            <li>
-              <mockup-category
-                .category=${category}
-                .filter=${this.searchQuery}
-              ></mockup-category>
-            </li>
-          `,
-        )}
-      </ul>
+        <ul>
+          ${repeat(
+            NotificationManager.getCategories(),
+            (category) => category.id,
+            (category) => html`
+              <li>
+                <mockup-category
+                  .category=${category}
+                  .filter=${this.searchQuery}
+                ></mockup-category>
+              </li>
+            `,
+          )}
+        </ul>
+      </div>
     `;
   }
 
