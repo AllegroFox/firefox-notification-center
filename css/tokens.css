@@ -1,0 +1,105 @@
+/* =========================================================
+   Firefox Notification Center — New Tab widget prototype
+   Dark + light theme, Acorn/Photon-inspired tokens
+   ========================================================= */
+
+:root {
+  /* Dark (default) */
+  --bg:           #0D0C15;
+  --bg-grad:      radial-gradient(1200px 600px at 50% -10%, rgba(123,92,240,0.18), transparent 60%),
+                  radial-gradient(900px  500px at 90% 10%, rgba(255,113,57,0.10), transparent 60%);
+  --surface:      #1C1B24;
+  --surface-2:    #242331;
+  --surface-3:    #2C2B3A;
+  --surface-hover:#312F40;
+  --border:       rgba(255,255,255,0.08);
+  --border-2:     rgba(255,255,255,0.14);
+  --border-strong:rgba(255,255,255,0.22);
+
+  --text:         #FBFBFE;
+  --text-2:       #CFCFD8;
+  --text-3:       #9E9EAD;
+  --text-muted:   #6B6B77;
+
+  --orange:       #FF7139;
+  --orange-soft:  rgba(255,113,57,0.14);
+  --purple:       #7B5CF0;
+  --purple-soft:  rgba(123,92,240,0.16);
+  --blue:         #00B3C7;
+  --green:        #3FE1B0;
+  --green-soft:   rgba(63,225,176,0.12);
+  --red:          #FF6680;
+  --red-soft:     rgba(255,102,128,0.14);
+  --yellow:       #FFCA3A;
+  --yellow-soft:  rgba(255,202,58,0.14);
+
+  --grad-brand:   linear-gradient(135deg, #7B5CF0 0%, #FF7139 100%);
+
+  --r-sm:   6px;
+  --r-md:   10px;
+  --r-lg:   14px;
+  --r-xl:   20px;
+  --r-full: 9999px;
+
+  --shadow-sm:  0 2px 8px  rgba(0,0,0,0.4);
+  --shadow-md:  0 4px 20px rgba(0,0,0,0.5);
+  --shadow-lg:  0 12px 48px rgba(0,0,0,0.55);
+
+  --font:       -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", sans-serif;
+  --mono:       "SF Mono", "JetBrains Mono", ui-monospace, monospace;
+
+  --t-fast:  120ms ease;
+  --t-base:  200ms ease;
+  --t-slow:  360ms cubic-bezier(.2,.7,.2,1);
+}
+
+html[data-theme="light"] {
+  --bg:           #F9F9FB;
+  --bg-grad:      radial-gradient(1200px 600px at 50% -10%, rgba(123,92,240,0.10), transparent 60%),
+                  radial-gradient(900px  500px at 90% 10%, rgba(255,113,57,0.07), transparent 60%);
+  --surface:      #FFFFFF;
+  --surface-2:    #F4F4F7;
+  --surface-3:    #EDEDF1;
+  --surface-hover:#E6E6EC;
+  --border:       rgba(0,0,0,0.07);
+  --border-2:     rgba(0,0,0,0.12);
+  --border-strong:rgba(0,0,0,0.22);
+
+  --text:         #15141A;
+  --text-2:       #3A3944;
+  --text-3:       #6B6B77;
+  --text-muted:   #9494A0;
+
+  --orange-soft:  rgba(255,113,57,0.12);
+  --purple-soft:  rgba(123,92,240,0.10);
+  --green-soft:   rgba(63,225,176,0.18);
+  --red-soft:     rgba(255,102,128,0.12);
+  --yellow-soft:  rgba(255,202,58,0.20);
+
+  --shadow-sm:  0 1px 2px rgba(20,20,30,0.06), 0 2px 8px rgba(20,20,30,0.04);
+  --shadow-md:  0 4px 16px rgba(20,20,30,0.08);
+  --shadow-lg:  0 16px 48px rgba(20,20,30,0.12);
+}
+
+* , *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: var(--font);
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--text);
+  background: var(--bg);
+  background-image: var(--bg-grad);
+  background-attachment: fixed;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  padding: 0;
+}

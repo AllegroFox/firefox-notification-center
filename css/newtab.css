@@ -1,0 +1,270 @@
+/* ── New Tab chrome (simulated) ─────────────────────────── */
+.newtab {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 28px 40px 80px;
+}
+
+.newtab__bar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+.newtab__logo {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: var(--grad-brand);
+  display: grid; place-items: center;
+  color: white; font-weight: 700;
+  flex-shrink: 0;
+}
+.newtab__search {
+  flex: 1;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-full);
+  padding: 12px 20px;
+  display: flex; align-items: center; gap: 12px;
+  color: var(--text-3);
+  max-width: 720px;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 14px;
+}
+.newtab__search svg { flex-shrink: 0; opacity: .7; }
+.newtab__theme {
+  border: 1px solid var(--border);
+  border-radius: var(--r-full);
+  padding: 8px 14px;
+  background: var(--surface);
+  color: var(--text-2);
+  font-size: 12px;
+  display: flex; align-items: center; gap: 6px;
+  transition: background var(--t-base);
+}
+.newtab__theme:hover { background: var(--surface-2); color: var(--text); }
+/* =========================================================
+   New Tab widget grid (compact home for the widget)
+   ========================================================= */
+.newtab__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-bottom: 24px;
+}
+@media (max-width: 960px) {
+  .newtab__grid { grid-template-columns: 1fr; }
+}
+.tile {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  padding: 18px 18px 16px;
+  box-shadow: var(--shadow-sm);
+  display: flex; flex-direction: column;
+  min-height: 260px;
+  position: relative;
+  transition: transform var(--t-base), box-shadow var(--t-base);
+}
+.tile__head {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 14px;
+}
+.tile__icon {
+  width: 28px; height: 28px;
+  border-radius: var(--r-md);
+  background: var(--grad-brand);
+  color: white;
+  display: grid; place-items: center;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+.tile__title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.005em;
+}
+.tile__sub {
+  font-size: 11px;
+  color: var(--text-3);
+  margin-top: 1px;
+}
+.tile__head-actions {
+  margin-left: auto;
+  display: flex; align-items: center; gap: 4px;
+}
+
+/* Compact notification widget */
+.compact {
+  cursor: default;
+}
+.compact__head { margin-bottom: 12px; }
+.compact__badge {
+  background: var(--orange-soft);
+  color: var(--orange);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: var(--r-full);
+  letter-spacing: 0.02em;
+  margin-left: auto;
+}
+.compact__expand {
+  width: 26px; height: 26px;
+  border-radius: var(--r-sm);
+  display: grid; place-items: center;
+  color: var(--text-3);
+  transition: background var(--t-fast), color var(--t-fast);
+}
+.compact__expand:hover { background: var(--surface-2); color: var(--text); }
+
+.compact__list {
+  display: flex; flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-height: 0;
+}
+.cnotif {
+  display: grid;
+  grid-template-columns: 26px 1fr auto;
+  gap: 10px;
+  align-items: center;
+  padding: 8px 8px;
+  border-radius: var(--r-md);
+  cursor: pointer;
+  transition: background var(--t-fast);
+  position: relative;
+}
+.cnotif:hover { background: var(--surface-2); }
+.cnotif.is-unread::before {
+  content: "";
+  position: absolute;
+  left: -2px; top: 50%; transform: translateY(-50%);
+  width: 4px; height: 4px; border-radius: 50%;
+  background: var(--purple);
+}
+.cnotif__icon {
+  width: 26px; height: 26px;
+  border-radius: var(--r-sm);
+  display: grid; place-items: center;
+  font-size: 12px; font-weight: 700;
+  color: white;
+}
+.cnotif__body { min-width: 0; }
+.cnotif__title {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.cnotif__sub {
+  font-size: 11px;
+  color: var(--text-3);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.cnotif__sub strong { color: var(--text-2); font-weight: 600; }
+.cnotif__time {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.compact__empty {
+  text-align: center;
+  padding: 18px 12px;
+  color: var(--text-3);
+  font-size: 12px;
+}
+.compact__empty .big { font-size: 22px; margin-bottom: 4px; }
+.compact__empty .ttl { color: var(--text); font-weight: 600; font-size: 13px; margin-bottom: 2px; }
+
+.compact__foot {
+  display: flex; align-items: center; gap: 8px;
+  padding-top: 12px;
+  margin-top: 10px;
+  border-top: 1px solid var(--border);
+  font-size: 11px;
+  color: var(--text-3);
+}
+.compact__foot .cta {
+  margin-left: auto;
+  color: var(--text);
+  font-weight: 600;
+  font-size: 12px;
+  display: flex; align-items: center; gap: 4px;
+  padding: 4px 8px;
+  border-radius: var(--r-sm);
+  transition: background var(--t-fast);
+}
+.compact__foot .cta:hover { background: var(--surface-2); }
+.mini-toggle {
+  display: flex; align-items: center; gap: 6px;
+  color: var(--text-3);
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: var(--r-full);
+  transition: background var(--t-fast), color var(--t-fast);
+}
+.mini-toggle:hover { background: var(--surface-2); color: var(--text-2); }
+.mini-toggle .dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--green); box-shadow: 0 0 0 3px var(--green-soft);
+}
+.mini-toggle.is-quiet .dot { background: var(--yellow); box-shadow: 0 0 0 3px var(--yellow-soft); }
+
+/* Sibling tiles (just for visual context on New Tab) */
+.tile--weather { background: linear-gradient(160deg, #2A2152 0%, #1C1B24 70%); }
+.tile--shortcut .shortcuts {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
+  margin-top: 4px;
+}
+.shortcut {
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  padding: 8px 4px;
+  border-radius: var(--r-md);
+  transition: background var(--t-fast);
+  cursor: pointer;
+}
+.shortcut:hover { background: var(--surface-2); }
+.shortcut__icon {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  display: grid; place-items: center;
+  color: white; font-weight: 700; font-size: 13px;
+}
+.shortcut__label {
+  font-size: 11px;
+  color: var(--text-2);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+.weather-big {
+  font-size: 38px;
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  display: flex; align-items: baseline; gap: 6px;
+}
+.weather-big small { font-size: 14px; color: var(--text-3); font-weight: 500; }
+.weather-meta {
+  color: var(--text-3);
+  font-size: 12px;
+  margin-top: 6px;
+}
+.weather-row {
+  display: flex; gap: 16px;
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+.weather-row .day { text-align: center; flex: 1; font-size: 11px; color: var(--text-3); }
+.weather-row .day .t { display: block; color: var(--text); font-weight: 600; font-size: 13px; margin-top: 2px; }
