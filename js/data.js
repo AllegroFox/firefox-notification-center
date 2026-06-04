@@ -25,7 +25,7 @@ const PROFILES = {
 };
 let currentProfile = 'personal';
 
-const SOURCES = [
+window.SOURCES = [
   // ===== Personal sources =====
   { id: 'nyt',     profile: 'personal', name: 'The New York Times',     host: 'nytimes.com',         color: '#000000', icon: 'N', weekly: 18, opened: 6,  status: 'healthy' },
   { id: 'slack-p', profile: 'personal', name: 'Slack — Indie Hackers',  host: 'indiehackers.slack.com', color: '#4A154B', icon: 'S', weekly: 5,  opened: 4,  status: 'healthy' },
@@ -45,7 +45,7 @@ const SOURCES = [
   { id: 'gmail-w', profile: 'work',     name: 'Gmail — Work',           host: 'mail.google.com',     color: '#EA4335', icon: 'G', weekly: 22, opened: 9,  status: 'healthy' },
 ];
 
-let NOTIFS = [
+window.NOTIFS = [
   // ===== Personal notifications =====
   { id: 1,  src: 'nyt',     when: minsAgo(8),   unread: true, isNew: true, title: 'Breaking: Senate passes infrastructure bill', preview: 'The vote was 67-32 after a marathon overnight session that included multiple amendments.' },
   { id: 2,  src: 'slack-p', when: minsAgo(36),  unread: true,              title: '2 new messages in #side-projects', preview: 'Marie: "Anyone else seeing this issue with the Stripe webhook?"' },

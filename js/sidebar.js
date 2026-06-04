@@ -17,11 +17,11 @@ const CategoryManager = new (class extends EventTarget {
   #store = [
     new Category({
       name: "Important",
-      sources: ["https://matrix.org", "https://gmail.com"],
+      sources: ["discord", "reddit"],
     }),
     new Category({
       name: "Others",
-      sources: ["https://news.example.com"], // TODO make this a real catch-all somehow
+      sources: ["nyt"], // TODO make this a real catch-all somehow
     }),
   ];
 
@@ -30,48 +30,14 @@ const CategoryManager = new (class extends EventTarget {
   }
 })();
 
-class Notification {
-  constructor({ source, title, when }) {
-    this.source = source;
-    this.title = title;
-    this.when = when;
-  }
-}
-
 const NotificationManager = new (class {
-  #store = [
-    new Notification({
-      source: "https://matrix.org",
-      title: "'Yep, backed out, please never do that again.'",
-      when: 20260604,
-    }),
-    new Notification({
-      source: "https://matrix.org",
-      title: "'Didn't see that, sorry!'",
-      when: 20260605,
-    }),
-    new Notification({
-      source: "https://gmail.com",
-      title: "Important: talk to a real dinosaur!",
-      when: 20260605,
-    }),
-    new Notification({
-      source: "https://gmail.com",
-      title: "Ice cream sales update",
-      when: 20260606,
-    }),
-    new Notification({
-      source: "https://news.example.com",
-      title: "People dead, but it's OK they don't live near you",
-      when: 20260607,
-    }),
-  ];
+  #store = [...window.NOTIFS];
 
   getNotifications(sources, searchQuery) {
     return this.#store.filter((notification) => {
       return (
         notification.title.toLowerCase().indexOf(searchQuery) >= 0 &&
-        sources.includes(notification.source)
+        sources.includes(notification.src)
       );
     });
   }
@@ -149,7 +115,7 @@ class CategoryElement extends LitElement {
       <div class="notification">
         <main>
           <strong class="title">${notification.title}</strong>
-          <span class="source">${notification.source}</span>
+          <span class="source">${window.SOURCES.find(x => x.id === notification.src).name}</span>
         </main>
       </div>
     `;
