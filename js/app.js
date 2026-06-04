@@ -138,6 +138,33 @@ $('#themeToggle').addEventListener('click', () => {
   $('#themeLabel').textContent = next === 'light' ? 'Dark' : 'Light';
 });
 
+/* =========================================================
+   Notification permission (Firefox logo)
+   ========================================================= */
+$('.newtab__logo').addEventListener('click', async () => {
+  if (!('Notification' in window)) {
+    showBanner({ icon: '🔕', text: 'Notifications aren’t supported in this browser.' });
+    return;
+  }
+  if (Notification.permission === 'granted') {
+    showBanner({ icon: '🔔', text: 'Notifications are already enabled.' });
+    return;
+  }
+  try {
+    const result = await Notification.requestPermission();
+    if (result === 'granted') {
+      showBanner({ icon: '🔔', text: 'Notifications enabled.', sub: 'Firefox can now alert you here.' });
+      new Notification('Firefox notifications are on', { body: 'You’ll see updates from your sources here.' });
+    } else if (result === 'denied') {
+      showBanner({ icon: '🔕', text: 'Notifications blocked.', sub: 'Re-enable them from the site permissions.' });
+    } else {
+      showBanner({ icon: '🔔', text: 'Notification request dismissed.', sub: 'Click the fox again to ask later.' });
+    }
+  } catch (err) {
+    showBanner({ icon: '⚠️', text: 'Couldn’t request notification permission.', sub: 'Serve this page over http://localhost — file:// blocks notifications.' });
+  }
+});
+
 /* Keyboard shortcut hint */
 document.addEventListener('keydown', (e) => {
   if (e.key === '?') {
