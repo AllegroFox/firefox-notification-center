@@ -45,55 +45,8 @@ $$('[data-group-mode]').forEach(btn => {
   });
 });
 
-/* =========================================================
-   Bulk actions
-   ========================================================= */
-$('#markAllBtn').addEventListener('click', () => {
-  const pool = notifsForProfile();
-  const snapshot = pool.map(n => [n.id, n.unread]);
-  pool.forEach(n => n.unread = false);
-  renderInbox(); renderStats();
-  showBanner({
-    icon: '✓', text: 'All caught up',
-    sub: `Marked everything in ${profile().name} as read.`,
-    undo: () => { snapshot.forEach(([id, was]) => { const n = NOTIFS.find(x => x.id === id); if (n) n.unread = was; }); renderInbox(); renderStats(); }
-  });
-});
-
-$('#cleanupBtn').addEventListener('click', () => {
-  const dormant = sourcesForProfile().filter(s => s.status === 'dormant' && !sourceState[s.id].revoked);
-  if (!dormant.length) {
-    showBanner({ icon: '✓', text: 'No dormant sources', sub: 'Everything looks healthy.' });
-    return;
-  }
-  dormant.forEach(s => sourceState[s.id].revoked = true);
-  renderSources(); renderInbox(); renderStats();
-  showBanner({
-    icon: '✦', text: `Revoked ${dormant.length} dormant sites`,
-    sub: dormant.map(d => d.name).join(', '),
-    undo: () => { dormant.forEach(s => sourceState[s.id].revoked = false); renderSources(); renderInbox(); renderStats(); }
-  });
-});
-
-$('#reviewDormantBtn').addEventListener('click', () => {
-  document.querySelector('[data-source-sort="dormant"]').click();
-});
-
-/* =========================================================
-   Pause menu
-   ========================================================= */
-const pauseBtn = $('#pauseAllBtn');
-const pauseMenu = $('#pauseMenu');
-pauseBtn.addEventListener('click', (e) => {
-  e.stopPropagation();
-  pauseMenu.classList.toggle('is-open');
-});
-document.addEventListener('click', () => pauseMenu.classList.remove('is-open'));
-pauseMenu.addEventListener('click', (e) => e.stopPropagation());
-
 const pad = (n) => String(n).padStart(2, '0');
 const fmt = (d) => `${pad(d.getHours())}:${pad(d.getMinutes())}`;
-$('[data-when="1h"]').textContent = fmt(new Date(NOW.getTime() + 60*60*1000));
 
 $$('#pauseMenu .menu__item[data-pause]').forEach(item => {
   item.addEventListener('click', () => {
@@ -193,6 +146,8 @@ function updateModeExamples() {
   if (calmEl)  calmEl.textContent  = `Would hide ${calmHidden} ${calmHidden === 1 ? 'notification' : 'notifications'} today`;
   if (focusEl) focusEl.textContent = `Would hide ${focusHidden} ${focusHidden === 1 ? 'notification' : 'notifications'} today`;
 }
+let activeMode;
+let modeFilter = () => {};
 function modeFilterFor(mode, n) {
   const saved = activeMode;
   activeMode = mode;
@@ -319,9 +274,8 @@ function renderAll() {
 }
 
 /* Hook compact re-render + mode examples into every state change */
-const _renderInbox = renderInbox;
 const _renderSources = renderSources;
-renderInbox = function() { _renderInbox(); renderCompact(); updateModeExamples(); };
+renderInbox = function() { renderCompact(); updateModeExamples(); };
 renderSources = function() { _renderSources(); renderCompact(); updateModeExamples(); };
 
 /* Initial render */
