@@ -28,9 +28,6 @@ function renderSources() {
         <div>
           <div class="ssource__name">
             <span>${s.name}</span>
-            ${flag ? '<span class="pill pill--dormant">Dormant</span>' : ''}
-            ${st.paused ? '<span class="pill pill--paused">Paused</span>' : ''}
-            ${(!flag && !st.paused && rate >= 50) ? '<span class="pill pill--healthy">Active</span>' : ''}
           </div>
           <div class="ssource__stats">
             ${s.weekly} this week · opened ${s.opened} (${rate}%)
