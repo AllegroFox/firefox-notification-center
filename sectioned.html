@@ -55,18 +55,6 @@ const NotificationManager = new class {
 	}
 };
 
-class NotificationElement extends LitElement {
-	static properties = {
-		notification: { attribute: false },
-	};
-
-	render() {
-		return `<div class=notification>
-			<strong>${notification.title}</strong> - ${notification.source}
-		</div>`;
-	}
-};
-
 class CategoryElement extends LitElement {
 	static properties = {
 		category: { attribute: false },
@@ -75,7 +63,24 @@ class CategoryElement extends LitElement {
 	
 	static styles = css`
 		h2 {
-			margin: 0;
+			margin-bottom: 0;
+		}
+
+		.notification {
+			padding-block: 2px;
+		
+			& > main {
+				border-radius: 4px;
+				padding: 4px;
+			}
+			
+			&:hover > main {
+				background: #7773;
+			}
+			
+			& .title {
+				display: block;
+			}
 		}
 	`;
 
@@ -97,7 +102,14 @@ class CategoryElement extends LitElement {
 	}
 	
 	notificationTemplate(notification) {
-		return html`<p>${notification.title}</p>`;
+		return html`
+			<div class="notification">
+				<main>
+					<strong class="title">${notification.title}</strong>
+					<span class="source">${notification.source}</span>
+				</main>
+			</div>
+		`;
 	}
 }
 
